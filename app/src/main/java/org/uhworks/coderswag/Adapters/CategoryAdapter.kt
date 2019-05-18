@@ -16,26 +16,37 @@ class CategoryAdapter(context: Context, categories: List<Category>) : BaseAdapte
     private val categories = categories
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+
         val categoryView: View
+        val holderView: ViewHolder
 
-        // LayoutInflater is an object takes an XML layout and returns it as a view that can be used in code
-        categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_item, null)
+        // If the view is not existent
+        if(convertView == null) {
 
-        // Create UI elements based on the IDs found on the categoryListItems
-        val categoryImage: ImageView = categoryView.findViewById(R.id.categoryImg)
-        val categoryName: TextView = categoryView.findViewById(R.id.categoryName)
+            // LayoutInflater is an object takes an XML layout and returns it as a view
+            categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_item, null)
+            holderView = ViewHolder()
+
+            // Create UI elements based on the IDs found on the categoryListItems
+            holderView.categoryImage = categoryView.findViewById(R.id.categoryImg)
+            holderView.categoryName = categoryView.findViewById(R.id.categoryName)
+
+            // Set the tag
+            categoryView.tag = holderView
+
+        } else {
+
+            holderView = convertView.tag as ViewHolder
+            categoryView = convertView
+
+        }
 
         // Set the values to the UI
         val category = categories[position]
-
-        // Set the category name to the textview
-        categoryName.text = category.title
-
-        // Set the image to the imageView
         val resourceId = context.resources.getIdentifier(category.image, "drawable", context.packageName)
-        categoryImage.setImageResource(resourceId)
 
-        println(resourceId)
+        holderView.categoryName?.text = category.title
+        holderView.categoryImage?.setImageResource(resourceId)
 
         return categoryView
     }
@@ -57,5 +68,11 @@ class CategoryAdapter(context: Context, categories: List<Category>) : BaseAdapte
     override fun getCount(): Int {
 
         return categories.count()
+    }
+
+    private class ViewHolder {
+
+        var categoryImage: ImageView? = null
+        var categoryName: TextView? = null
     }
 }
