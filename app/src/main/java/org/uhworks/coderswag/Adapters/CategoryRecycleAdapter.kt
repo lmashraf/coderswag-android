@@ -13,7 +13,7 @@ import org.uhworks.coderswag.R
 class CategoryRecycleAdapter(
     private val context: Context,
     private val categories: List<Category>,
-    val itemClick: (Category) -> Unit
+    private val itemClick: (Category) -> Unit
 ) : RecyclerView.Adapter<CategoryRecycleAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {

@@ -10,6 +10,7 @@ import android.widget.TextView
 import org.uhworks.coderswag.Model.Category
 import org.uhworks.coderswag.R
 
+// OBSOLETE: Used with ListView and not needed with RecyclerView
 class CategoryAdapter(private val context: Context, private val categories: List<Category>) : BaseAdapter() {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

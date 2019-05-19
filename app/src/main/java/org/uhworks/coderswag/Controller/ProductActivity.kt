@@ -1,9 +1,9 @@
 package org.uhworks.coderswag.Controller
 
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_product.*
 import org.uhworks.coderswag.Adapters.ProductRecycleAdapter
@@ -24,20 +24,34 @@ class ProductActivity : AppCompatActivity() {
         println(categoryType)
 
         // Adapter
-        adapter = ProductRecycleAdapter(this, DataService.getProductList(categoryType))
+        adapter = ProductRecycleAdapter(this, DataService.getProductList(categoryType)) { product ->
+            // Create intent
+            val productDetailsIntent = Intent(this, ProductDetailActivity::class.java)
+
+            // Send product as extra parcelable object
+            productDetailsIntent.putExtra(EXTRA_PRODUCT, product)
+
+            // Start activity
+            startActivity(productDetailsIntent)
+
+        }
         productListView.adapter = adapter
 
         // Change the number of cells depending on the screen orientation
-        var spanCount: Int
+        var spanCount = DEFAULT_SPAN_COUNT
 
-        spanCount = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-            LANDSCAPE_SPAN_COUNT else DEFAULT_SPAN_COUNT
-
-        spanCount =
-            if (resources.configuration.screenWidthDp > BIG_SCREEN_MIN_SIZE) BIG_SCREEN_SPAN_COUNT else DEFAULT_SPAN_COUNT
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            spanCount = LANDSCAPE_SPAN_COUNT
+        }
+        if (resources.configuration.screenWidthDp > BIG_SCREEN_MIN_SIZE) {
+            spanCount = BIG_SCREEN_SPAN_COUNT
+        }
 
         // Layout Manager
         val layoutManager = GridLayoutManager(this, spanCount)
         productListView.layoutManager = layoutManager
+
+        // Add click listener
+        productListView.setOnClickListener { }
     }
 }

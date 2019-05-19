@@ -1,7 +1,6 @@
 package org.uhworks.coderswag.Adapters
 
 import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,14 @@ import org.uhworks.coderswag.R
 
 class ProductRecycleAdapter(
     private val context: Context,
-    private val products: List<Product>
+    private val products: List<Product>,
+    private val itemClick: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductRecycleAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
 
         val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.product_list_item, parent, false)
-        return Holder(inflatedView)
+        return Holder(inflatedView, itemClick)
     }
 
     override fun getItemCount(): Int {
@@ -31,7 +31,7 @@ class ProductRecycleAdapter(
         holder.bindProduct(products[position], context)
     }
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View, val itemClick: (Product) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         private val productImage: ImageView = itemView.findViewById(R.id.productImage)
         private val productName: TextView = itemView.findViewById(R.id.productName)
@@ -45,7 +45,8 @@ class ProductRecycleAdapter(
             productName.text = product.title
             productPrice.text = product.price
 
+            // Bind the click event
+            itemView.setOnClickListener { itemClick(product) }
         }
-
     }
 }
