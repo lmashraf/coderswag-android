@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.activity_product.*
 import org.uhworks.coderswag.Adapters.ProductRecycleAdapter
 import org.uhworks.coderswag.R
 import org.uhworks.coderswag.Services.DataService
-import org.uhworks.coderswag.Utilities.EXTRA_CATEGORY
+import org.uhworks.coderswag.Utilities.*
 
 class ProductActivity : AppCompatActivity() {
 
@@ -28,17 +28,16 @@ class ProductActivity : AppCompatActivity() {
         productListView.adapter = adapter
 
         // Change the number of cells depending on the screen orientation
-        var spanCount = 2
+        var spanCount: Int
 
-        spanCount = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else spanCount
-        spanCount = if (resources.configuration.screenWidthDp > 720) 3 else spanCount
+        spanCount = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+            LANDSCAPE_SPAN_COUNT else DEFAULT_SPAN_COUNT
+
+        spanCount =
+            if (resources.configuration.screenWidthDp > BIG_SCREEN_MIN_SIZE) BIG_SCREEN_SPAN_COUNT else DEFAULT_SPAN_COUNT
 
         // Layout Manager
         val layoutManager = GridLayoutManager(this, spanCount)
         productListView.layoutManager = layoutManager
-
-        Toast.makeText(this, "You clicked on the $categoryType category!", Toast.LENGTH_SHORT).show()
-
-
     }
 }
