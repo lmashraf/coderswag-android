@@ -10,14 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import org.uhworks.coderswag.Model.Category
 import org.uhworks.coderswag.R
 
-class CategoryRecycleAdapter(private val context: Context, private val categories: List<Category>) : RecyclerView.Adapter<CategoryRecycleAdapter.Holder>() {
+class CategoryRecycleAdapter(
+    private val context: Context,
+    private val categories: List<Category>,
+    val itemClick: (Category) -> Unit
+) : RecyclerView.Adapter<CategoryRecycleAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
 
         // Inflate the view for the first time here
         val inflatedView = LayoutInflater.from(parent.context).inflate(R.layout.category_list_item, parent, false)
 
-        return Holder(inflatedView)
+        return Holder(inflatedView, itemClick)
     }
 
     override fun getItemCount(): Int {
@@ -30,7 +34,7 @@ class CategoryRecycleAdapter(private val context: Context, private val categorie
         holder.bindCategory(categories[position], context)
     }
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class Holder(itemView: View, val itemClick: (Category) -> Unit) : RecyclerView.ViewHolder(itemView) {
 
         private val categoryImage: ImageView = itemView.findViewById(R.id.categoryImg)
         private val categoryName: TextView = itemView.findViewById(R.id.categoryName)
@@ -41,6 +45,9 @@ class CategoryRecycleAdapter(private val context: Context, private val categorie
 
             categoryImage.setImageResource(resourceId)
             categoryName.text = category.title
+
+            // Bind the click to the item through lambda
+            itemView.setOnClickListener { itemClick(category) }
         }
 
 

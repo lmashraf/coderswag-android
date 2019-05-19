@@ -18,7 +18,7 @@ class CategoryAdapter(private val context: Context, private val categories: List
         val holderView: ViewHolder
 
         // If the view is not existent
-        if(convertView == null) {
+        if (convertView == null) {
 
             // LayoutInflater is an object takes an XML layout and returns it as a view
             categoryView = LayoutInflater.from(context).inflate(R.layout.category_list_item, null)
